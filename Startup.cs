@@ -10,6 +10,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using WeatherWalkingSkeleton.Config;
+using WeatherWalkingSkeleton.Services;
 
 namespace WeatherWalkingSkeleton
 {
@@ -25,6 +27,11 @@ namespace WeatherWalkingSkeleton
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // Add OpenWeatherMap API key
+            var apiKey = Configuration.GetSection("OpenWeather");
+            services.Configure<OpenWeather>(apiKey);
+            
+            services.AddScoped<IOpenWeatherService, OpenWeatherService>();
             services.AddControllers();
         }
 
