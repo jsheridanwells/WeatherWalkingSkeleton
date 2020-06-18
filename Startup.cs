@@ -28,8 +28,8 @@ namespace WeatherWalkingSkeleton
         public void ConfigureServices(IServiceCollection services)
         {
             // Add OpenWeatherMap API key
-            var apiKey = Configuration.GetSection("OpenWeather");
-            services.Configure<OpenWeather>(apiKey);
+            var openWeatherConfig = Configuration.GetSection("OpenWeather");
+            services.Configure<OpenWeather>(openWeatherConfig);
             
             services.AddScoped<IOpenWeatherService, OpenWeatherService>();
             services.AddControllers();
