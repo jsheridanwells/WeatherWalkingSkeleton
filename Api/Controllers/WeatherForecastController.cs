@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using WeatherWalkingSkeleton.Infrastructure;
 using WeatherWalkingSkeleton.Services;
 
 namespace WeatherWalkingSkeleton.Controllers
@@ -23,10 +25,21 @@ namespace WeatherWalkingSkeleton.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(string location, Unit unit = Unit.Metric)
+        public async Task<IActionResult> Get(string location, Unit unit = Unit.Metric)
         {
-            var forecast = _weatherService.GetFiveDayForecast(location, unit);
-            return Ok(forecast);
+            try
+            {
+                var forecast = await _weatherService.GetFiveDayForecastAsync(location, unit);
+                return Ok(forecast);
+            }
+            catch (OpenWeatherException e)
+            {
+                return BadRequest(e.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e);
+            }
         }
     }
 }
