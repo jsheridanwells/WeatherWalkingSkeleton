@@ -3,4 +3,7 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>65988f0a-26ed-44ef-8749-f86a2f5c18a9</UserSecretsId>
   </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="xunit.extensibility.core" Version="2.4.0" />
+  </ItemGroup>
 </Project>

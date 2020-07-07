@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using WeatherWalkingSkeleton.Config;
+using WeatherWalkingSkeleton.Infrastructure;
 using WeatherWalkingSkeleton.Models;
 
 namespace WeatherWalkingSkeleton.Services
@@ -38,30 +39,37 @@ namespace WeatherWalkingSkeleton.Services
             string url = BuildOpenWeatherUrl("forecast", location, unit);
             var forecasts = new List<WeatherForecast>();
            
-            var client = _httpFactory.CreateClient();
+            var client = _httpFactory.CreateClient("OpenWeatherClient");
             var response = await client.GetAsync(url);
-            var json = await response.Content.ReadAsStringAsync();
-            var openWeatherResponse = JsonSerializer.Deserialize<OpenWeatherResponse>(json);
-            foreach (var forecast in openWeatherResponse.Forecasts)
+            
+            if (response.IsSuccessStatusCode)
             {
-                forecasts.Add(new WeatherForecast
+                var json = await response.Content.ReadAsStringAsync();
+                var openWeatherResponse = JsonSerializer.Deserialize<OpenWeatherResponse>(json);
+                foreach (var forecast in openWeatherResponse.Forecasts)
                 {
-                    Date = new DateTime(forecast.Dt),
-                    Temp = forecast.Temps.Temp,
-                    FeelsLike = forecast.Temps.FeelsLike,
-                    TempMin = forecast.Temps.TempMin,
-                    TempMax = forecast.Temps.TempMax,
-                });
+                    forecasts.Add(new WeatherForecast
+                    {
+                        Date = new DateTime(forecast.Dt),
+                        Temp = forecast.Temps.Temp,
+                        FeelsLike = forecast.Temps.FeelsLike,
+                        TempMin = forecast.Temps.TempMin,
+                        TempMax = forecast.Temps.TempMax,
+                    });
+                } 
+                
+                return forecasts;
+            }
+            else
+            {
+                throw new OpenWeatherException(response.StatusCode, "Error response from OpenWeatherApi: " + response.ReasonPhrase);
             } 
-            
-            
-            return forecasts;
         }
         
         private string BuildOpenWeatherUrl(string resource, string location, Unit unit)
         {
             return $"https://api.openweathermap.org/data/2.5/{resource}" +
-                   $"?appid={_openWeatherConfig.ApiKey}" +
+                   $"?appid={_openWeatherConfig.ApiKey}XXX" +
                    $"&q={location}" +
                    $"&units={unit}";
         }
