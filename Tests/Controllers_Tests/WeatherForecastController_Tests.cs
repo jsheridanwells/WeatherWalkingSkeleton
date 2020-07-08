@@ -25,6 +25,8 @@ namespace WeatherWalkingSkeleton.Tests.Controllers_Tests
 
             var result = await sut.Get("Chicago") as OkObjectResult;
 
+            Assert.IsType<List<WeatherForecast>>(result.Value);
+            Assert.Equal(200, result.StatusCode);
         }
 
         [Fact]
