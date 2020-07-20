@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using WeatherWalkingSkeleton.Config;
@@ -69,7 +68,7 @@ namespace WeatherWalkingSkeleton.Services
         private string BuildOpenWeatherUrl(string resource, string location, Unit unit)
         {
             return $"https://api.openweathermap.org/data/2.5/{resource}" +
-                   $"?appid={_openWeatherConfig.ApiKey}XXX" +
+                   $"?appid={_openWeatherConfig.ApiKey}" +
                    $"&q={location}" +
                    $"&units={unit}";
         }

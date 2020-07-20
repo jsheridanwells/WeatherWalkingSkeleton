@@ -41,6 +41,6 @@ namespace WeatherWalkingSkeleton.Controllers
             {
                 return StatusCode(500, e.Message);
             }
-        }
+        }    
     }
 }
