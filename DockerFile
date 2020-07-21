@@ -9,7 +9,6 @@ COPY ./Api/bin/Release/netcoreapp3.1/publish .
 COPY ./scripts/startup.sh .
 RUN chmod 755 /app/startup.sh
 
-# RUN cp /etc/nginx/nginx.conf /etc/nginx/nginx.conf.BAK
 COPY config/nginx.conf /etc/nginx
 
 ENV ASPNETCORE_URLS http://+:5000
