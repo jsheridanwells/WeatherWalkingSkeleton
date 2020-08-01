@@ -10,6 +10,7 @@ namespace WeatherWalkingSkeleton.Tests.Infrastructure
         public static StringContent OkResponse => BuildOkResponse();
         public static StringContent UnauthorizedResponse => BuildUnauthorizedResponse();
         public static StringContent NotFoundResponse => BuildNotFoundResponse();
+        public static StringContent InternalErrorResponse => BuildInternalErrorResponse();
 
         private static StringContent BuildOkResponse()
         {
@@ -33,6 +34,12 @@ namespace WeatherWalkingSkeleton.Tests.Infrastructure
         private static StringContent BuildNotFoundResponse()
         {
             var json = JsonSerializer.Serialize(new { Cod = 404, Message = "city not found" });
+            return new StringContent(json);
+        }
+
+        private static StringContent BuildInternalErrorResponse()
+        {
+            var json = JsonSerializer.Serialize(new {Cod = 500, Message = "Internal Error."});
             return new StringContent(json);
         }
     }

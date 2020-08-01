@@ -1,10 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging.Abstractions;
-using Microsoft.Extensions.Options;
 using WeatherWalkingSkeleton.Controllers;
 using WeatherWalkingSkeleton.Models;
 using WeatherWalkingSkeleton.Services;

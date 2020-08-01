@@ -69,7 +69,7 @@ namespace WeatherWalkingSkeleton.Services
         private string BuildOpenWeatherUrl(string resource, string location, Unit unit)
         {
             return $"https://api.openweathermap.org/data/2.5/{resource}" +
-                   $"?appid={_openWeatherConfig.ApiKey}XXX" +
+                   $"?appid={_openWeatherConfig.ApiKey}" +
                    $"&q={location}" +
                    $"&units={unit}";
         }

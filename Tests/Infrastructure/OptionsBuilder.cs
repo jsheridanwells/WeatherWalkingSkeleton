@@ -7,7 +7,7 @@ namespace WeatherWalkingSkeleton.Tests.Infrastructure
     {
         public static IOptions<OpenWeather> OpenWeatherConfig()
         {
-            return Options.Create<OpenWeather>(new OpenWeather());
+            return Options.Create<OpenWeather>(new OpenWeather { ApiKey = "00000"});
         }
     }
 }
