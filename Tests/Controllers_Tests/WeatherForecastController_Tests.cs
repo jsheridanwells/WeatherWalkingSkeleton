@@ -27,34 +27,34 @@ namespace WeatherWalkingSkeleton.Tests.Controllers_Tests
             Assert.Equal(200, result.StatusCode);
         }
 
-        [Fact]
-        public async Task Returns_500_When_Api_Returns_Error()
-        {
-            var opts = OptionsBuilder.OpenWeatherConfig();
-            var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.UnauthorizedResponse,
-                HttpStatusCode.Unauthorized);
-            var service = new OpenWeatherService(opts, clientFactory);
-            var sut = new WeatherForecastController(new NullLogger<WeatherForecastController>(), service);
-            
-            var result = await sut.Get("Rio de Janeiro") as ObjectResult;
-            
-            Assert.Contains("Error response from OpenWeatherApi: Unauthorized", result.Value.ToString());
-            Assert.Equal(500, result.StatusCode); 
-        }
-
-        [Fact]
-        public async Task Returns_BadRequestResult_When_Location_Not_Found()
-        {
-            var opts = OptionsBuilder.OpenWeatherConfig();
-            var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.NotFoundResponse,
-                HttpStatusCode.NotFound);
-            var service = new OpenWeatherService(opts, clientFactory);
-            var sut = new WeatherForecastController(new NullLogger<WeatherForecastController>(), service);
-            
-            var result = await sut.Get("Westworld") as ObjectResult;
-            
-            Assert.Contains("not found", result.Value.ToString());
-            Assert.Equal(400, result.StatusCode);
-        }
+//        [Fact]
+//        public async Task Returns_500_When_Api_Returns_Error()
+//        {
+//            var opts = OptionsBuilder.OpenWeatherConfig();
+//            var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.UnauthorizedResponse,
+//                HttpStatusCode.Unauthorized);
+//            var service = new OpenWeatherService(opts, clientFactory);
+//            var sut = new WeatherForecastController(new NullLogger<WeatherForecastController>(), service);
+//            
+//            var result = await sut.Get("Rio de Janeiro") as ObjectResult;
+//            
+//            Assert.Contains("Error response from OpenWeatherApi: Unauthorized", result.Value.ToString());
+//            Assert.Equal(500, result.StatusCode); 
+//        }
+//
+//        [Fact]
+//        public async Task Returns_BadRequestResult_When_Location_Not_Found()
+//        {
+//            var opts = OptionsBuilder.OpenWeatherConfig();
+//            var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.NotFoundResponse,
+//                HttpStatusCode.NotFound);
+//            var service = new OpenWeatherService(opts, clientFactory);
+//            var sut = new WeatherForecastController(new NullLogger<WeatherForecastController>(), service);
+//            
+//            var result = await sut.Get("Westworld") as ObjectResult;
+//            
+//            Assert.Contains("not found", result.Value.ToString());
+//            Assert.Equal(400, result.StatusCode);
+//        }
     }
 }

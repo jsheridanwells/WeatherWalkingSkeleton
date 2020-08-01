@@ -48,28 +48,28 @@ namespace WeatherWalkingSkeleton.Services
             Assert.Equal(401, (int)result.StatusCode);
         }
         
-        [Fact]
-         public async Task Returns_OpenWeatherException_When_Called_With_Bad_Argument()
-         {
-             var opts = OptionsBuilder.OpenWeatherConfig();
-             var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.NotFoundResponse,
-                 HttpStatusCode.NotFound);
-             var sut = new OpenWeatherService(opts, clientFactory);
- 
-             var result = await Assert.ThrowsAsync<OpenWeatherException>(() => sut.GetFiveDayForecastAsync("Westeros"));
-             Assert.Equal(404, (int)result.StatusCode);
-         }
-
-         [Fact]
-         public async Task Returns_OpenWeatherException_On_OpenWeatherInternalError()
-         {
-             var opts = OptionsBuilder.OpenWeatherConfig();
-             var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.InternalErrorResponse,
-                 HttpStatusCode.InternalServerError);
-             var sut = new OpenWeatherService(opts, clientFactory);
- 
-             var result = await Assert.ThrowsAsync<OpenWeatherException>(() => sut.GetFiveDayForecastAsync("New York"));
-             Assert.Equal(500, (int)result.StatusCode);
-         }
+//        [Fact]
+//         public async Task Returns_OpenWeatherException_When_Called_With_Bad_Argument()
+//         {
+//             var opts = OptionsBuilder.OpenWeatherConfig();
+//             var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.NotFoundResponse,
+//                 HttpStatusCode.NotFound);
+//             var sut = new OpenWeatherService(opts, clientFactory);
+// 
+//             var result = await Assert.ThrowsAsync<OpenWeatherException>(() => sut.GetFiveDayForecastAsync("Westeros"));
+//             Assert.Equal(404, (int)result.StatusCode);
+//         }
+//
+//         [Fact]
+//         public async Task Returns_OpenWeatherException_On_OpenWeatherInternalError()
+//         {
+//             var opts = OptionsBuilder.OpenWeatherConfig();
+//             var clientFactory = ClientBuilder.OpenWeatherClientFactory(OpenWeatherResponses.InternalErrorResponse,
+//                 HttpStatusCode.InternalServerError);
+//             var sut = new OpenWeatherService(opts, clientFactory);
+// 
+//             var result = await Assert.ThrowsAsync<OpenWeatherException>(() => sut.GetFiveDayForecastAsync("New York"));
+//             Assert.Equal(500, (int)result.StatusCode);
+//         }
     }
 }
