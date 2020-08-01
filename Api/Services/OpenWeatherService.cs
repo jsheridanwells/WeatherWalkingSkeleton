@@ -6,7 +6,6 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Options;
 using WeatherWalkingSkeleton.Config;
-using WeatherWalkingSkeleton.Infrastructure;
 using WeatherWalkingSkeleton.Models;
 
 namespace WeatherWalkingSkeleton.Services
@@ -39,31 +38,24 @@ namespace WeatherWalkingSkeleton.Services
             string url = BuildOpenWeatherUrl("forecast", location, unit);
             var forecasts = new List<WeatherForecast>();
            
-            var client = _httpFactory.CreateClient("OpenWeatherClient");
+            var client = _httpFactory.CreateClient();
             var response = await client.GetAsync(url);
-            
-            if (response.IsSuccessStatusCode)
+            var json = await response.Content.ReadAsStringAsync();
+            var openWeatherResponse = JsonSerializer.Deserialize<OpenWeatherResponse>(json);
+            foreach (var forecast in openWeatherResponse.Forecasts)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var openWeatherResponse = JsonSerializer.Deserialize<OpenWeatherResponse>(json);
-                foreach (var forecast in openWeatherResponse.Forecasts)
+                forecasts.Add(new WeatherForecast
                 {
-                    forecasts.Add(new WeatherForecast
-                    {
-                        Date = new DateTime(forecast.Dt),
-                        Temp = forecast.Temps.Temp,
-                        FeelsLike = forecast.Temps.FeelsLike,
-                        TempMin = forecast.Temps.TempMin,
-                        TempMax = forecast.Temps.TempMax,
-                    });
-                } 
-                
-                return forecasts;
-            }
-            else
-            {
-                throw new OpenWeatherException(response.StatusCode, "Error response from OpenWeatherApi: " + response.ReasonPhrase);
+                    Date = new DateTime(forecast.Dt),
+                    Temp = forecast.Temps.Temp,
+                    FeelsLike = forecast.Temps.FeelsLike,
+                    TempMin = forecast.Temps.TempMin,
+                    TempMax = forecast.Temps.TempMax,
+                });
             } 
+            
+            
+            return forecasts;
         }
         
         private string BuildOpenWeatherUrl(string resource, string location, Unit unit)
