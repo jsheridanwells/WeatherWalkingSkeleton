@@ -44,8 +44,9 @@ namespace WeatherWalkingSkeleton.Services
             
             if (response.IsSuccessStatusCode)
             {
-                var json = await response.Content.ReadAsStringAsync();
-                var openWeatherResponse = JsonSerializer.Deserialize<OpenWeatherResponse>(json);
+                var jsonOpts = new JsonSerializerOptions {IgnoreNullValues = true, PropertyNameCaseInsensitive = true};
+                var contentStream = await response.Content.ReadAsStreamAsync();
+                var openWeatherResponse = await JsonSerializer.DeserializeAsync<OpenWeatherResponse>(contentStream, jsonOpts);
                 foreach (var forecast in openWeatherResponse.Forecasts)
                 {
                     forecasts.Add(new WeatherForecast
