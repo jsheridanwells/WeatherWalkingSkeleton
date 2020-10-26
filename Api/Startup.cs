@@ -23,6 +23,7 @@ namespace WeatherWalkingSkeleton
         }
 
         public IConfiguration Configuration { get; }
+        private string _devPolicy = "devPolicy";
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
@@ -30,6 +31,15 @@ namespace WeatherWalkingSkeleton
             // Add OpenWeatherMap API key
             var openWeatherConfig = Configuration.GetSection("OpenWeather");
             services.Configure<OpenWeather>(openWeatherConfig);
+            services.AddCors(opts =>
+            {
+                opts.AddPolicy(_devPolicy, builder =>
+                {
+                    builder.AllowAnyMethod()
+                        .AllowAnyOrigin()
+                        .AllowAnyHeader();
+                });
+            });
             services.AddHttpClient();
             services.AddScoped<IOpenWeatherService, OpenWeatherService>();
             services.AddControllers();
@@ -41,6 +51,7 @@ namespace WeatherWalkingSkeleton
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+                app.UseCors(_devPolicy);
             }
 
             app.UseHttpsRedirection();
